@@ -5,7 +5,7 @@ celery_app = Celery(
     "stocktrading",
     broker=redis_url,
     backend=redis_url,
-    include=["utils.tasks"],
+    include=["utils.celery_tasks"],
 )
 
 celery_app.conf.update(

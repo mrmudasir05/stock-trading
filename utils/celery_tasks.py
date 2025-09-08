@@ -7,7 +7,7 @@ from utils.db import SessionLocal
 def buy_coin_task(user_id: int, coin_id: int, quantity: float, price: float):
     db = SessionLocal()
     try:
-        trade = crud2.buy_coin(db, user_id, coin_id, quantity, price)
+        trade = operations.buy_coin(db, user_id, coin_id, quantity, price)
         return {"status": "success", "trade_id": trade.id}
     except Exception as e:
         return {"status": "error", "message": str(e)}
@@ -19,7 +19,7 @@ def buy_coin_task(user_id: int, coin_id: int, quantity: float, price: float):
 def sell_coin_task(user_id: int, coin_id: int, quantity: float, price: float):
     db = SessionLocal()
     try:
-        trade = crud2.sell_coin(db, user_id, coin_id, quantity, price)
+        trade = operations.sell_coin(db, user_id, coin_id, quantity, price)
         return {"status": "success", "trade_id": trade.id}
     except Exception as e:
         return {"status": "error", "message": str(e)}

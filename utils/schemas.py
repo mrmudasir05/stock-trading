@@ -62,7 +62,7 @@ class UserMe(BaseModel):
     id: int
     username: str
     email: str
-    balance : Annotated[float, Field(..., gt=0)]
+    balance : Annotated[float, Field(..., ge=0)]
 
 
 class UserTrade(BaseModel):
