@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Env files
+.env
+.venv/
+venv/
+env/
+
+# Alembic
+# keep migration/ but ignore caches inside
+migration/__pycache__/
+
+# Databases
+*.db
+*.sqlite3
+
+# IDE
+.idea/
+.vscode/
