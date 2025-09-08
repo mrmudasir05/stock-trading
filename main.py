@@ -41,7 +41,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access_token = create_access_token({"sub": str(user.id)})
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.post("/users/", response_model=schemas.UserResponse)
+@app.post("/signup", response_model=schemas.UserResponse)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return operations.create_user(db, user)
 
