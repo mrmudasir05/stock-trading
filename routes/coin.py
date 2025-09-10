@@ -12,31 +12,48 @@ router = APIRouter(prefix="/coin", tags=["Coin"])
 
 
 @router.get("/available_coins", response_model=list[coin_schema.CoinResponse1])
-def show_coins(db: Session = Depends(get_db)):
+async def show_coins(db: Session = Depends(get_db)) -> object:
+    """
+
+    :param db: session for the database
+    :return:  show all coins from the coins
+    """
     coins = db.query(models.Coin).all()
     return coins
 
 
 @router.post("/add", response_model=coin_schema.CoinResponse)
-def add_coin(
+async def add_coin(
     coins: coin_schema.CoinCreate,
     db: Session = Depends(get_db),
     # users: models.User = Depends(master_user())
 ):
+    """
+
+    :param coins: create coin schema
+    :param db: session for the database
+    :return: add coin in the coins table
+    """
     return operations.add_coin(db, coins.symbol, coins.name)
 
 
 @router.post("/buy")
-def buy(
+async def buy(
     trade: trade_schema.TradeCreate,
     current_user: models.User = Depends(get_current_user)
-):
+) -> dict:
+    """
+
+    :param trade: trade create schema
+    :param current_user: logged in user
+    :return: message and ID for the given task
+    """
     task = buy_coin_task.delay(current_user.id, trade.coin_id, trade.quantity, trade.price)
     return {"message": "Buy order submitted", "task_id": task.id}
 
 
 @router.post("/sell")
-def sell(
+async def sell(
     trade: trade_schema.TradeCreate,
     current_user: models.User = Depends(get_current_user)
 ):
@@ -51,11 +68,11 @@ def sell(
 
 
 @router.get("/tasks/{task_id}")
-def get_task_status(task_id: str) -> dict[str, str]:
+async def get_task_status(task_id: str) -> dict[str, str]:
     """
 
-    :param task_id:
-    :return:
+    :param task_id: id of the task
+    :return: result of the request
     """
     result = celery_app.AsyncResult(task_id)
     return {"task_id": task_id, "status": result.status, "result": result.result}
