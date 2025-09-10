@@ -86,27 +86,26 @@ celery -A app.utils.tasks.celery_app worker --loglevel=info
 
 ###  Auth
 - `POST /login` → Login with username & password (returns JWT token)
-
-### Users
 - `POST /signup` → Create a new user  
-- `GET /users` → Get all users basic Info  
-- `GET /user/info` → Get my info  
-- `PUT /users/update` → Update my info  
-- `DELETE /users/me` → Delete my account  
+### Users
 
-### Wallets & Balance
-- `POST /user/recharge` → Recharge account balance  
-- `POST /wallets/deposit` → Deposit into wallet using account balance 
-- `POST /wallets/withdraw` → Withdraw from wallet and add to account balance
+ 
+- `GET /user/info` → Get my info  
 - `GET /user/wallets` → Get my wallets  
+- `GET /user/trade` → Get my trades
+- `PUT /user/update` → Update my info  
+- `DELETE /user/me` → Delete my account  
+- `GET /all_users` → Get all users basic Info 
+
+### Wallets
+- `POST /wallet/recharge` → Recharge account balance  
+- `POST /wallet/deposit` → Deposit into wallet using account balance 
+- `POST /wallet/withdraw` → Withdraw from wallet and add to account balance
 
 ### Coins
-- `GET /available_coins` → Show all available coins  
-- `POST /coins/add` → Add a coin (Admin only )  
-
-### Trading (Async with Celery)
+- `GET /coin/available_coins` → Show all available coins  
+- `POST /coin/add` → Add a coin (Admin only )  
 - `POST /coins/buy` → Place a buy order (coin_id, quantity of coins, price of the coin)  
 - `POST /coins/sell` → Place a sell order (coin_id, quantity of coins, price of the coin)   
 - `GET /tasks/{task_id}` → Check status of buy/sell task  
 
----

@@ -1,4 +1,4 @@
-from utils.db import Base
+from Database.db import Base
 from sqlalchemy import String,TIMESTAMP
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
@@ -14,5 +14,11 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, default=datetime.utcnow)
 
     # Relationships
-    wallets: Mapped[list["Wallet"]] = relationship(back_populates="user")
-    trades: Mapped[list["Trade"]] = relationship(back_populates="user")
+    wallets: Mapped[list["Wallet"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
+    trades: Mapped[list["Trade"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )

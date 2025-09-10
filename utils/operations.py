@@ -1,18 +1,33 @@
 from sqlalchemy.orm import Session
-from utils import models, schemas
+import models
 from utils.security import hash_password
 from fastapi import HTTPException
+from schemas import user_schema
 
 
-def create_user(db: Session, user: schemas.UserCreate):
-    hashed_pw = hash_password(user.password)
-    db_user = models.User(username=user.username, email=user.email, password_hash=hashed_pw)
+def create_user(db: Session, user_: user_schema.UserCreate):
+    # check if username or email already exists
+    existing_user = db.query(models.User).filter(
+        (models.User.username == user_.username) | (models.User.email == user_.email)
+    ).first()
+
+    if existing_user:
+        raise HTTPException(
+            status_code=409,
+            detail="User already exists"
+        )
+    hashed_pw = hash_password(user_.password)
+    db_user = models.User(
+        username=user_.username,
+        email=user_.email,
+        password_hash=hashed_pw
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-def update_user(db: Session, user_id: int, user_update: schemas.UserUpdate):
+def update_user(db: Session, user_id: int, user_update: user_schema.UserUpdate):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     update_data = user_update.dict(exclude_unset=True)
     if "password" in update_data:
@@ -33,13 +48,12 @@ def delete_user(db: Session, user_id: int):
     return db_user
 
 
-def deposit_funds(db: Session, user_id: int, coin_id: int, amount: float):
+def deposit_wallet(db: Session, user_id: int, coin_id: int, amount: float):
     wallet = db.query(models.Wallet).filter_by(user_id=user_id, coin_id=coin_id).first()
     user = db.query(models.User).filter_by(id=user_id).first()
     if not wallet:
-        # Create wallet if it doesn't exist
-        wallet = models.Wallet(user_id=user_id, coin_id=coin_id, balance=0.0)
-        db.add(wallet)
+        raise HTTPException(status_code=400, detail="Wallet not exists")
+
     if user.balance < amount:
         raise HTTPException(status_code=400, detail="Insufficient Balance to deposit money to wallet")
     user.balance -=amount
@@ -51,8 +65,15 @@ def deposit_funds(db: Session, user_id: int, coin_id: int, amount: float):
     db.refresh(wallet)
     return wallet
 
+def wallet_create(db: Session, user_id: int, coin_id: int):
+    wallet = models.Wallet(user_id=user_id, coin_id=coin_id, balance=0.0, coins = 0)
+    db.add(wallet)
+    db.commit()
+    db.refresh(wallet)
+    return wallet
 
-def withdraw_funds(db: Session, user_id: int, coin_id: int, amount: float):
+
+def withdraw_wallet(db: Session, user_id: int, coin_id: int, amount: float):
     wallet = db.query(models.Wallet).filter_by(user_id=user_id, coin_id=coin_id).first()
     user = db.query(models.User).filter_by(id=user_id).first()
     if not wallet or wallet.balance < amount:

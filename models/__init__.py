@@ -1,4 +1,4 @@
-from utils.db import Base
+from Database.db import Base
 from .user import User
 from .wallet import Wallet
 from .coin import Coin

@@ -1,7 +1,7 @@
 # celery_tasks.py
 from celery_app import celery_app
 from utils import operations
-from utils.db import SessionLocal
+from Database.db import SessionLocal
 
 @celery_app.task
 def buy_coin_task(user_id: int, coin_id: int, quantity: float, price: float):

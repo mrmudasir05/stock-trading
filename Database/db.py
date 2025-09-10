@@ -31,5 +31,14 @@ except ProgrammingError:
 # Now connect to your actual app DB
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 class Base(DeclarativeBase):
     pass
