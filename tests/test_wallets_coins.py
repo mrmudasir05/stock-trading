@@ -1,5 +1,9 @@
-def test_user(client):
-    # Create user first
+def test_user(client) -> dict:
+    """
+
+    :param client: TestClient
+    :return: Bearer token
+    """
     client.post("/signup", json={
         "username": "walletuser",
         "email": "wallet@example.com",
@@ -10,15 +14,15 @@ def test_user(client):
     headers = {"Authorization": f"Bearer {token}"}
     return headers
 
+
 def test_recharge_account(client):
-    # Recharge
     headers = test_user(client)
     response = client.post("/user/recharge", json={"amount": 1000}, headers=headers)
     assert response.status_code == 200
     data = response.json()
     assert data["balance"] == 1000
 
-    # Wallet create
+
 def test_create_wallet(client):
     headers = test_user(client)
     response = client.post("/wallets/create", json={"coin_id": 1}, headers=headers)
@@ -26,7 +30,7 @@ def test_create_wallet(client):
     data = response.json()
     assert data["coin_id"] == 1
 
-    # Deposit
+
 def test_deposit_wallet(client):
     headers = test_user(client)
     response = client.post("/wallets/deposit", json={"wallet_id" : 1,"amount": 100}, headers=headers)
@@ -34,7 +38,7 @@ def test_deposit_wallet(client):
     data = response.json()
     assert data["balance"] == 100
 
-    # Withdraw
+
 def test_withdraw_wallet(client):
     headers = test_user(client)
     response = client.post("/wallets/withdraw", json={"wallet_id" : 1,"amount": 50}, headers=headers)
@@ -42,15 +46,6 @@ def test_withdraw_wallet(client):
     data = response.json()
     assert data["balance"] == 50
 
-# def test_add_coin(client):
-#     headers = test_wallet_user(client)
-#     response = client.post("/coin/add", json={
-#   "symbol": "BTC",
-#   "name": "BitCoin"
-# }, headers=headers)
-#     assert response.status_code == 200
-#     data = response.json()
-#     assert data["symbol"] == "BTC"
 
 def test_buy_coin(client):
     headers = test_user(client)
@@ -62,6 +57,7 @@ def test_buy_coin(client):
     assert response.status_code == 200
     data = response.json()
     assert data["message"] == "Buy order submitted"
+
 
 def test_sell_coin(client):
     headers = test_user(client)

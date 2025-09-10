@@ -36,6 +36,7 @@ def test_login_and_get_info(client):
     data = response.json()
     assert data["username"] == "testuser"
 
+
 def test_login_with_wrong_creds(client):
     response = client.post("/login", data={
         "username": "testuser",
