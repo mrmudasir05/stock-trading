@@ -15,7 +15,7 @@ async def create(
     request: wallet_schema.WalletCreate,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
-):
+) -> wallet_schema.WalletResponse:
     """
 
     :param request: Wallet create schema
@@ -31,7 +31,7 @@ async def deposit(
     request: transaction_schema.TransactionCreate,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
-):
+) -> wallet_schema.WalletResponse:
     """
 
         :param request: Transaction create schema
@@ -47,7 +47,7 @@ async def withdraw(
     request: transaction_schema.TransactionCreate,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
-):
+) -> wallet_schema.WalletResponse:
     """
 
             :param request: Transaction create schema

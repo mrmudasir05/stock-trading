@@ -12,7 +12,7 @@ router = APIRouter(prefix="/coin", tags=["Coin"])
 
 
 @router.get("/available_coins", response_model=list[coin_schema.CoinResponse1])
-async def show_coins(db: Session = Depends(get_db)) -> object:
+async def show_coins(db: Session = Depends(get_db))-> list[coin_schema.CoinResponse1]:
     """
 
     :param db: session for the database
@@ -27,7 +27,7 @@ async def add_coin(
     coins: coin_schema.CoinCreate,
     db: Session = Depends(get_db),
     # users: models.User = Depends(master_user())
-):
+) -> coin_schema.CoinResponse:
     """
 
     :param coins: create coin schema
@@ -56,7 +56,7 @@ async def buy(
 async def sell(
     trade: trade_schema.TradeCreate,
     current_user: models.User = Depends(get_current_user)
-):
+) -> dict:
     """
 
     :param trade: trade create schema
@@ -68,7 +68,7 @@ async def sell(
 
 
 @router.get("/tasks/{task_id}")
-async def get_task_status(task_id: str) -> dict[str, str]:
+async def get_task_status(task_id: str) -> dict:
     """
 
     :param task_id: id of the task

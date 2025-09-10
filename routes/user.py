@@ -10,7 +10,7 @@ router = APIRouter(prefix="/user", tags=["User"])
 
 
 @router.get("/info", response_model=user_schema.UserMe)
-async def get_user_info(current_user: models.User = Depends(get_current_user)):
+async def get_user_info(current_user: models.User = Depends(get_current_user)) -> user_schema.UserMe:
     """
 
     :param current_user: logged in user
@@ -20,7 +20,7 @@ async def get_user_info(current_user: models.User = Depends(get_current_user)):
 
 
 @router.get("/wallets", response_model=user_schema.UserWallets)
-async def get_user_wallets(current_user: models.User = Depends(get_current_user)) -> dict:
+async def get_user_wallets(current_user: models.User = Depends(get_current_user)) -> user_schema.UserWallets:
     """
 
     :param current_user: logged in user
@@ -30,7 +30,7 @@ async def get_user_wallets(current_user: models.User = Depends(get_current_user)
 
 
 @router.get("/trades", response_model=user_schema.UserTrade)
-async def get_user_trades(current_user: models.User = Depends(get_current_user)):
+async def get_user_trades(current_user: models.User = Depends(get_current_user)) -> user_schema.UserTrade:
     """
 
         :param current_user: logged in user
@@ -59,7 +59,7 @@ async def update_user(
 async def delete_user(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
-):
+) -> dict:
     """
 
     :param db: session of the database
@@ -74,7 +74,7 @@ async def recharge_balance(
     recharge: user_schema.BalanceRecharge,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
-):
+) -> user_schema.RechargeResponse:
     """
 
     :param recharge: Balance recharge schema
@@ -92,7 +92,7 @@ async def recharge_balance(
 
 
 @router.get("/all_users", response_model=list[user_schema.UserInfo])
-async def get_users(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+async def get_users(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)) -> list[user_schema.UserInfo]:
     """
 
     :param db: session of the database

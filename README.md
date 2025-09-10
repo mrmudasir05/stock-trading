@@ -1,17 +1,26 @@
-#  Stock Trading Backend
+#  Stock Trading Application
 
 A scalable stock trading backend system built with **FastAPI**, **PostgreSQL**, **SQLAlchemy**, **Redis**, and **Celery**.  
-This project demonstrates clean architecture, asynchronous task handling, and secure API development.
+A lightweight **Streamlit frontend** is included for easy interaction with the APIs.
 
 ---
 
 ##  Features
+### Backend
 -  User authentication with JWT (signup, login, role-based access).
 -  Deposit and withdraw funds.
 -  Add and list coins (only master/admin user can add).
 -  Buy and sell coins with **Celery task queue**.
 -  PostgreSQL as the main database.
 -  Redis as a broker for Celery (task queue).
+
+### Frontend (Streamlit)
+- User login and signup forms.
+- Display user info in a clean table.
+- View wallets and coin information in tabular format.
+- Update profile info (username, email, password — optional).
+- Logout button to return to login page.
+- Simple, interactive UI for all user operations.
 
 ---
 
@@ -22,8 +31,7 @@ This project demonstrates clean architecture, asynchronous task handling, and se
 - **Redis** (In-memory DB / Celery broker)
 - **Celery** (Background task processing)
 - **Pydantic** (Data validation)
-
-
+- **Streamlit** (Frontend UI)
 
 ---
 
@@ -33,6 +41,7 @@ This project demonstrates clean architecture, asynchronous task handling, and se
 ```bash
 git clone https://github.com/mrmudasir05/stock-trading.git
 cd stock-trading
+
 ```
 ### 2.  Create a virtual environment
 ```bash
@@ -75,13 +84,18 @@ redis-server
 celery -A app.utils.tasks.celery_app worker --loglevel=info
 ```
 
+### - Start Steamlit server
+```bash
+.streamlit run app.py
+```
+
 ### This will start:
 
 - FastAPI server → http://localhost:8000
 - PostgreSQL → on port 5432
 - Redis → on port 6379
 - Celery worker → running in background
-
+- Streamlit UI → http://localhost:8501
 ## API Endpoints
 
 ###  Auth
