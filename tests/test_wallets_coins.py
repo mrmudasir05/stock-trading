@@ -23,6 +23,14 @@ def test_recharge_account(client):
     assert data["balance"] == 1000
 
 
+def test_add_coin(client):
+    headers = test_user(client)
+    response = client.post("/coin/add", json={"symbol": "PI", "name" : "PI Coin"}, headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["symbol"] == "PI"
+
+
 def test_create_wallet(client):
     headers = test_user(client)
     response = client.post("/wallets/create", json={"coin_id": 1}, headers=headers)
