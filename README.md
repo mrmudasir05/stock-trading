@@ -81,7 +81,7 @@ redis-server
 
 ### - Start Celery worker
 ```bash
-celery -A app.utils.tasks.celery_app worker --loglevel=info
+celery -A celery_app worker --loglevel=info
 ```
 
 ### - Start Steamlit server
