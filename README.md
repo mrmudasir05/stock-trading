@@ -118,7 +118,7 @@ celery -A app.utils.tasks.celery_app worker --loglevel=info
 
 ### Coins
 - `GET /coin/available_coins` → Show all available coins  
-- `POST /coin/add` → Add a coin (Admin only )  
+- `POST /coin/add` → Add a coin 
 - `POST /coins/buy` → Place a buy order (coin_id, quantity of coins, price of the coin)  
 - `POST /coins/sell` → Place a sell order (coin_id, quantity of coins, price of the coin)   
 - `GET /tasks/{task_id}` → Check status of buy/sell task  
