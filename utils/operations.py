@@ -65,8 +65,17 @@ def deposit_wallet(db: Session, user_id: int, coin_id: int, amount: float):
     db.refresh(wallet)
     return wallet
 
+
 def wallet_create(db: Session, user_id: int, coin_id: int):
     wallet = models.Wallet(user_id=user_id, coin_id=coin_id, balance=0.0, coins = 0)
+    coin = db.query(models.Coin).filter_by(id=coin_id).first()
+    if not coin:
+        raise HTTPException(status_code=400, detail="Coin not exists")
+
+    existing_wallet = db.query(models.Wallet).filter(models.Wallet.coin_id == wallet.coin_id).first()
+    if existing_wallet:
+        raise HTTPException(status_code=400, detail="Wallet already created")
+
     db.add(wallet)
     db.commit()
     db.refresh(wallet)
