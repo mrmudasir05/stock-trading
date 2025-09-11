@@ -86,7 +86,7 @@ celery -A celery_app worker --loglevel=info
 
 ### - Start Steamlit server
 ```bash
-.streamlit run app.py
+streamlit run app.py
 ```
 
 ### This will start:
